@@ -89,55 +89,193 @@ int main()
 #include <stdio.h>  
 #include <stdlib.h>  
 #include <malloc.h>
-//    定义链表中的节点  
+
+// 定义链表中的节点  
 typedef struct node  
 {  
-    int member;                //    节点中的成员  
-    struct node *pNext;        //    指向下一个节点的指针  
+    int member;                // 节点中的成员  
+    struct node *pNext;        // 指向下一个节点的指针  
 }Node,*pNode;  
-//    函数声明  
-pNode CreateList();                 //  创建链表函数,功能为创建1个包含10个整数节点的链表  
-void TraverseList(pNode );            //  遍历链表函数，并依次显示链表中的每个元素  
-int Del_Node(pNode,int );        //    删除链表节点,第一个参数是头节点，第二个参数是删除第几个节点 
-//    创建链表函数  
-pNode CreateList()  
 
+// 函数声明  
+pNode CreateList();           // 创建链表函数,功能为创建1个包含10个整数节点的链表  
+void TraverseList(pNode);     // 遍历链表函数，并依次显示链表中的每个元素  
+int Del_Node(pNode,int);      // 删除链表节点,第一个参数是头节点，第二个参数是要删除的值
+
+// 创建链表函数  
+pNode CreateList()  
 {  
-   pNode h= nullptr;      // 链表头指针
-    pNode c = nullptr;   // 当前节点
-    pNode p= nullptr;  // 前一个节点
-    for(int i=0;i<10;i++){
-        c=new Node{i,nullptr};
-if(h==nullptr){
-    h=c;
-}
-else{
+    pNode pHead = NULL;       // 头指针
+    pNode pTail = NULL;       // 尾指针，用于快速添加节点
+    pNode pNew = NULL;        // 新节点指针
     
-}
+    // 创建10个节点
+    for(int i = 0; i < 10; i++)
+    {
+        // 创建新节点
+        pNew = (pNode)malloc(sizeof(Node));
+        if(pNew == NULL)
+        {
+            printf("内存分配失败！\n");
+            exit(1);
+        }
+        
+        // 从键盘读取数据
+        scanf("%d", &(pNew->member));
+        pNew->pNext = NULL;
+        
+        // 如果是第一个节点
+        if(pHead == NULL)
+        {
+            pHead = pNew;
+            pTail = pNew;
+        }
+        else
+        {
+            // 将新节点连接到链表尾部
+            pTail->pNext = pNew;
+            pTail = pNew;
+        }
     }
+    
+    return pHead;
 }  
-//    遍历链表函数  
+
+// 遍历链表函数  
 void TraverseList(pNode pHead)  
 {  
+    pNode pCurrent = pHead;  // 当前节点指针
+    
+    while(pCurrent != NULL)
+    {
+        printf("%d", pCurrent->member);
+        if(pCurrent->pNext != NULL)
+        {
+            printf(" ");
+        }
+        pCurrent = pCurrent->pNext;
+    }
+    printf("\n");
 }  
-//    删除链表节点函数  
-//    第一个参数是头节点，第二个参数是要删除第几个节点
-int Del_Node(pNode pHead,int del)  
+
+// 删除链表节点函数  
+// 第一个参数是头节点，第二个参数是要删除的值
+int Del_Node(pNode pHead, int del_value)  
 {  
+    pNode pCurrent = pHead;      // 当前节点
+    pNode pPrev = NULL;          // 前一个节点
+    int found = 0;               // 是否找到要删除的节点
+    
+    // 遍历链表
+    while(pCurrent != NULL)
+    {
+        if(pCurrent->member == del_value)
+        {
+            found = 1;
+            
+            // 如果要删除的是头节点
+            if(pPrev == NULL)
+            {
+                pNode temp = pHead;
+                pHead = pHead->pNext;
+                pCurrent = pHead;
+                free(temp);
+            }
+            else
+            {
+                // 删除中间或尾部节点
+                pPrev->pNext = pCurrent->pNext;
+                pNode temp = pCurrent;
+                pCurrent = pCurrent->pNext;
+                free(temp);
+            }
+        }
+        else
+        {
+            // 当前节点不是要删除的节点，继续遍历
+            pPrev = pCurrent;
+            pCurrent = pCurrent->pNext;
+        }
+    }
+    
+    return found;
 }
+
+// 由于题目要求函数原型是int Del_Node(pNode pHead,int)，但我们需要修改头指针
+// 这里使用一个包装函数来适配题目的要求
+int Del_Node_Wrapper(pNode* ppHead, int del_value)
+{
+    pNode pCurrent = *ppHead;      // 当前节点
+    pNode pPrev = NULL;            // 前一个节点
+    pNode pTemp = NULL;            // 临时指针
+    int found = 0;                 // 是否找到要删除的节点
+    
+    // 遍历链表
+    while(pCurrent != NULL)
+    {
+        if(pCurrent->member == del_value)
+        {
+            found = 1;
+            
+            // 如果要删除的是头节点
+            if(pPrev == NULL)
+            {
+                pTemp = *ppHead;
+                *ppHead = (*ppHead)->pNext;
+                pCurrent = *ppHead;
+                free(pTemp);
+            }
+            else
+            {
+                // 删除中间或尾部节点
+                pPrev->pNext = pCurrent->pNext;
+                pTemp = pCurrent;
+                pCurrent = pCurrent->pNext;
+                free(pTemp);
+            }
+        }
+        else
+        {
+            // 当前节点不是要删除的节点，继续遍历
+            pPrev = pCurrent;
+            pCurrent = pCurrent->pNext;
+        }
+    }
+    
+    return found;
+}
+
 int main()  
 {  
-    pNode pHead = NULL;                //  定义初始化头节点，等价于 struct Node *pHead == NULL  
-    int num;                        //    作为Del_Node函数第二个参数      
-    int return_val=-1;  
-    pHead = CreateList();            //  创建一个非循环单链表，并将该链表的头结点的地址付给pHead  
-    //printf("你输入的数据是：");  //  因为希冀平台采用UTF-8编码格式，源码中的中文提示会显示乱码,因此将所有中文提示全部注释掉，自己调试时可以加上提示信息。
-    TraverseList(pHead);    //  调用遍历链表函数  
+    pNode pHead = NULL;            // 定义初始化头节点，等价于 struct Node *pHead == NULL  
+    int num;                       // 作为Del_Node函数第二个参数      
+    int return_val = -1;  
+    
+    pHead = CreateList();          // 创建一个非循环单链表，并将该链表的头结点的地址付给pHead  
+    
+    //printf("你输入的数据是：");
+    TraverseList(pHead);           // 调用遍历链表函数  
+    
     //printf("请输入要删除节点的值：");  
-    scanf("%d",&num); 
-    while(return_val!=0)
-    return_val=Del_Node(pHead,num);  
+    scanf("%d", &num); 
+    
+    // 删除所有值为num的节点
+    do {
+        return_val = Del_Node_Wrapper(&pHead, num);
+    } while(return_val != 0);
+    
     //printf("操作完成后的数据是：");  
     TraverseList(pHead);  
+    
+    // 释放链表内存
+    pNode pCurrent = pHead;
+    pNode pTemp = NULL;
+    while(pCurrent != NULL)
+    {
+        pTemp = pCurrent;
+        pCurrent = pCurrent->pNext;
+        free(pTemp);
+    }
+    
     return 0;  
-}  
+}
