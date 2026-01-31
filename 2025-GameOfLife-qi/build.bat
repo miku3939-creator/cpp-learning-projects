@@ -44,6 +44,7 @@ if %errorlevel% == 0 (
     echo   1. 安装 MinGW-w64 或 Visual Studio
     echo   2. 从 https://easyx.cn 下载安装EasyX
     echo   3. 确保库文件路径正确
+
 )
 
 echo.
