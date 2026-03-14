@@ -17,24 +17,28 @@ class Solution
 {
 public:
     bool hasCycle(ListNode *head)
-    {   
+    {
 
-        set<ListNode *> s;
-        bool isCycle = false;
+        /*1unordered_set<ListNode *> s;
         while (head != NULL)
         {
-            if (s.find(head) == s.end())
-            {
-                s.insert(head);
-                head=head->next;
-            }
-            else
-            {
-                isCycle = true;
-                break;
-            }
+            if (s.find(head) != s.end())
+                return true;
+            s.insert(head);
+            head = head->next;
         }
-        return isCycle;
+        return false;*/
+        if(head==NULL||head->next==NULL)
+        return false;
+        ListNode * slow=head;
+        ListNode * fast=head->next;
+        while(fast!=NULL&&fast->next!=NULL){
+            if(slow==fast)
+            return true;
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        return false;
     }
 };
 // @lc code=end

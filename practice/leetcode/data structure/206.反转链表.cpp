@@ -15,19 +15,32 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution
+{
 public:
-    ListNode* reverseList(ListNode* head) {
+    ListNode *reverseList(ListNode *head)
+    {
+        /* 双指针
         ListNode* prev=NULL;
-         ListNode* curr=head;
-         while(curr!=NULL){
-             ListNode* next=curr->next;
-            curr->next=prev;
-            prev=curr;
-            curr=next;
-         }
-         return prev;
+          ListNode* curr=head;
+          while(curr!=NULL){
+              ListNode* next=curr->next;
+             curr->next=prev;
+             prev=curr;
+             curr=next;
+          }
+          return prev;
+    */
+
+        // 递归
+        if (head == NULL || head->next == NULL)
+        {
+            return head;
+        }
+        ListNode *last = reverseList(head->next);
+        head->next->next = head;
+        head->next = NULL;
+        return last;
     }
 };
 // @lc code=end
-
