@@ -1,0 +1,6 @@
+banana a
+apple p
+mississippi s
+abcde z
+aaaaa a
+template t

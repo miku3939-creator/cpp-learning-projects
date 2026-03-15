@@ -1,0 +1,6 @@
+level
+abcba
+hello
+AaA
+abcdcba
+abca
