@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 using namespace std;
 class Node
 {
@@ -12,31 +11,47 @@ public:
 class List
 {
 public:
-    Node *head;
-    List() : head(NULL) {}
-    void create(vector<int> v, int n)
+    Node *first;
+    List() : first(NULL) {}
+
+    void createList(int n)
     {
-        Node *q = head;
+        first = new Node(1);
+        Node *p = first;
+        for (int i = 2; i <= n; i++)
+        {
+            p->next = new Node(i);
+            p = p->next;
+        }
+        p->next = first;
+    }
+
+    void circle(int n, int m)
+    {
+        Node *p = first;
         for (int i = 0; i < n; i++)
         {
-            Node *p = new Node(v[i]);
-            q->next = p;
-            q = p;
-            if(i==n-1)
-            p->next=head->next;
+            int j = 1;
+            while (j != m)
+            {
+                p = p->next;
+                j++;
+            }
+            cout << p->val << ' ';
+            Node *q = p->next;
+            p->val = q->val;
+            p->next = q->next;
+            delete q;
         }
-    }
-
-    void del(Node * node){
+        cout << endl;
     }
 };
-int main(){
-    int n,m;
-    vector<int> v;
-    for(int i=1;i<=n;i++){
-        v.push_back(i);
-    }
+int main()
+{
+    int n, m;
+    cin >> n >> m;
     List list;
-    list.create(v,n);
-
+    list.createList(n);
+    list.circle(n, m);
+    return 0;
 }

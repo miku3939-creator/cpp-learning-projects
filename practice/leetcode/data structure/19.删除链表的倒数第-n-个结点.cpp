@@ -104,5 +104,25 @@ public:
         delete fast;
         return head;
     }
+    /*best!!!!
+          ListNode* dummy=new ListNode(0,head);
+        ListNode *slow = dummy;
+        ListNode *fast = dummy;
+        while (n >= 0)
+        {
+          fast=fast->next;
+          n--;
+        }
+        while (fast!= NULL)
+        {
+            fast = fast->next;
+            slow = slow->next;
+        }
+        fast= slow->next;
+        slow->next = fast->next;
+        delete fast;
+        fast= dummy->next;
+        delete dummy;
+        return fast;*/
 };
 // @lc code=end
