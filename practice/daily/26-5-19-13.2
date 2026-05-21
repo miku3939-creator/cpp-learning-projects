@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <string>
+using namespace std;
+
+vector<int> v;
+vector<int> h; 
+vector<int> s; 
+
+// 路径压缩
+int find(int x)
+{
+    if (v[x] == x)
+        return x;
+    else
+        return v[x] = find(v[x]);
+}
+
+
+void Union(int x, int y)
+{
+    int rootx = find(x);
+    int rooty = find(y);
+    if (rootx != rooty)
+    {
+        if (h[rootx] < h[rooty])
+        {
+            v[rootx] = rooty;
+            s[rooty] += s[rootx]; 
+        }
+        else if (h[rooty] < h[rootx])
+        {
+            v[rooty] = rootx;
+            s[rootx] += s[rooty]; 
+        }
+
+        {
+            v[rootx] = rooty;
+            s[rooty] += s[rootx]; 
+            h[rooty]++;           
+        }
+    }
+}
+
+int main()
+{
+    int n, m, a, b;
+    cin >> n >> m；
+
+    v.resize(n);
+    h.resize(n, 0);
+    s.resize(n, 1); 
+    for (int i = 0; i < n; i++)
+    {
+        v[i] = i;
+    }
+
+    string op;
+    for (int i = 0; i < m; i++)
+    {
+        cin >> op;
+        if (op == "union")
+        {
+            cin >> a >> b;
+            Union(a, b);
+        }
+        else if (op == "same")
+        {
+            cin >> a >> b;
+            if (find(a) == find(b))
+                cout << "Yes" << "\n"; 
+            else
+                cout << "No" << "\n";
+        }
+        else if (op == "query")
+        {
+            cin >> a;
+            int r = find(a);
+            cout << r << ' ' << s[r] << "\n"; }
+    }
+    return 0;
+}
