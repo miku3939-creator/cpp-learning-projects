@@ -1,9 +1,11 @@
 #include "5-21邻接矩阵.cpp"
 using namespace std;
-void prim(MatGraph g, int v)
+int prim(MatGraph g, int v)
 {
     int lowcost[MAXV];
     int lead[MAXV];
+    int sum=0;
+    int cnt=0;
     for (int i = 0; i < g.n; i++)
     {
         lowcost[i] = g.edges[v][i];
@@ -19,7 +21,8 @@ void prim(MatGraph g, int v)
                 min = lowcost[j];
                 k = j;
             }
-        cout << "  边(" << lead[k] << "," << k << "),权为" << min << endl;
+        sum+=min;
+        cnt++;
         lowcost[k] = 0;
         for (int j = 0; j< g.n; j++)
             if (g.edges[k][j] != 0 && g.edges[k][j] < lowcost[j] && lowcost[j] != 0)
@@ -28,4 +31,6 @@ void prim(MatGraph g, int v)
                 lead[j] = k;
             }
     }
+    if(cnt<g.n-1)return -1;
+    return sum;
 }

@@ -108,10 +108,10 @@ int KMPval(string s,string t)				//改进的KMP算法
 int main()
 {
 	//s="ababcabcacbab";
-	string s="abcaabbabcabaacbacba";
+	string s="abaabaabcabaacbacba";
 	cout << "s: " << s << endl;
 	//t="abcac";
-	string t="abcabaa";
+	string t="abaabc";
 	cout << "t: " << t << endl;
 	cout << "t在s中的位置: " << KMP(s,t) << endl;
 	return 0;

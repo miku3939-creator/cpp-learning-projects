@@ -1,5 +1,15 @@
-#define maxe 100
+/*Kruskal算法-最小生成树
+一、问题描述
+给定一个带权无向连通图，使用Kruskal算法求最小生成树（MST）的总权重。
+
+二、输入形式
+第一行输入两个正整数n和m（1 ≤ n ≤ 1000, 1 ≤ m ≤ 100000），表示节点数和边数。
+接下来m行，每行三个整数u、v、w，表示节点u和v之间有一条权重为w的边。
+
+三、输出形式
+输出一个整数，表示最小生成树的总权重。如果图不连通，输出-1。*/#define maxe 100
 #include <iostream>
+#define maxe 10000
 using namespace std;
 class edge
 {
@@ -9,9 +19,9 @@ public:
 };
 
 // 排序
-void merge(edge a[], int r, int mid, int l)
+void merge(edge a[], int l, int mid, int r)
 {
-    edge *p = new edge[l - r + 1];
+    edge *p = new edge[r-l + 1];
     int i = l, j = mid + 1, k = 0;
     while (i <= mid && j <= r)
     {
@@ -57,10 +67,11 @@ int find(int p[], int x)
 
 int kruskal(edge e[], int n, int m)
 {
-    mergeSort(e, 0, m);
+    mergeSort(e, 0, m-1);
     int p[maxe];
     int sum=0;//最小边权和
-    for (int i = 0; i < n; i++)
+    int cnt=0;
+    for (int i = 1; i < n+1; i++)
     {
         p[i] = i;
     }
@@ -70,9 +81,10 @@ int kruskal(edge e[], int n, int m)
         int pv = find(p, e[i].v);
         if(pu!=pv){
             p[pv]=pu;
-            sum+=e[i].w;
+            sum+=e[i].w;cnt++;
         }
     }
+    if(cnt!=n-1)return -1;
     return sum;
 }
 
@@ -80,8 +92,10 @@ int main()
 {
     edge e[maxe]; // 边数组
     int n, m;
+    cin >>n>>m;
     for (int i = 0; i < m; i++)
     {
         cin >> e[i].u >> e[i].v >> e[i].w;
     }
+    cout<<kruskal(e,n,m)<<endl;
 }

@@ -51,10 +51,10 @@ node *build(vector<int> &p, int pb, int pe, vector<int> &m, int mb, int me, map<
         return nullptr;
     int rootval = p[pb];
     int mm = findex[rootval];
-    int pr = mm - mb ;
+    int pr = mm - mb;
     node *root = new node(rootval);
-    root->lc = build(p, pb + 1, pb + pr, m, mb , mm-1, findex);
-    root->rc = build(p, pb + pr + 1, pe, m, mm+1, me, findex);
+    root->lc = build(p, pb + 1, pb + pr, m, mb, mm - 1, findex);
+    root->rc = build(p, pb + pr + 1, pe, m, mm + 1, me, findex);
     return root;
 }
 node *buildtree(vector<int> &p, vector<int> &m)
@@ -76,7 +76,7 @@ void print(node *p)
         cout << p->val << ' ';
     }
 }
-int main()
+/*int main()
 {
     ifstream in("in.txt");
     int n, e;
@@ -90,6 +90,25 @@ int main()
     for (int i = 0; i < n; i++)
     {
         in >> e;
+        m.push_back(e);
+    }
+    node *root = buildtree(p, m);
+    print(root);
+    return 0;
+}*/
+int main()
+{
+    int n, e;
+    vector<int> p, m;
+    cin >> n;
+    for (int i = 0; i < n; i++)
+    {
+        cin >> e;
+        p.push_back(e);
+    }
+    for (int i = 0; i < n; i++)
+    {
+        cin >> e;
         m.push_back(e);
     }
     node *root = buildtree(p, m);
